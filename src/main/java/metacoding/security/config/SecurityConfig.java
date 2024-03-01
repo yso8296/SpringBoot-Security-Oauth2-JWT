@@ -38,6 +38,11 @@ public class SecurityConfig {
                     .defaultSuccessUrl("/");
         });
 
+        http.oauth2Login(form -> {
+            form
+                    .loginPage("/loginForm"); // 구글 로그인 완료된 뒤의 후처리가 필요함
+        });
+
         return http.build();
     }
 }

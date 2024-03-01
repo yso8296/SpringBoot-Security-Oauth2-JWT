@@ -33,6 +33,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('bootBuildImage') {
@@ -42,3 +43,6 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// 클라이언트 아이디: 147521920274-9vtvlo25jcel8ua0etd6bib2kipgvo99.apps.googleusercontent.com
+// 클라이언트 보안 비밀번호: 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
