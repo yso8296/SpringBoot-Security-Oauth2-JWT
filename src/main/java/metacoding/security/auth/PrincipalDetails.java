@@ -17,11 +17,22 @@ import java.util.Map;
 // Authentication 안에 User정보가 있어야 됨
 // User오브젝트 타입 => UserDetails 타입 객체
 // Security Session => Authentication => UserDetails(PrincipalDetails)
-@RequiredArgsConstructor
 @Data
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
-    private final User user; // 콤포지션
+    private User user; // 콤포지션
+    private Map<String, Object> attributes;
+
+    // 일반 로그인
+    public PrincipalDetails(User user) {
+        this.user = user;
+    }
+    // OAuth 로그인
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
+
 
     // 해당 유저의 권한을 리턴하는 곳
     @Override
@@ -68,12 +79,12 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     }
 
     @Override
-    public <A> A getAttribute(String name) {
-        return OAuth2User.super.getAttribute(name);
+    public String getName() {
+        return null;
     }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return attributes;
     }
 }
