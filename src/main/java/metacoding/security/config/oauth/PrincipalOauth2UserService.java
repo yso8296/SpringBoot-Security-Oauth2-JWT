@@ -2,6 +2,7 @@ package metacoding.security.config.oauth;
 
 import metacoding.security.auth.PrincipalDetails;
 import metacoding.security.config.oauth.provider.GoogleUserInfo;
+import metacoding.security.config.oauth.provider.KakaoUserInfo;
 import metacoding.security.config.oauth.provider.NaverUserInfo;
 import metacoding.security.config.oauth.provider.OAuth2UserInfo;
 import metacoding.security.model.User;
@@ -45,8 +46,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
             System.out.println("네이버 로그인 요청");
             oAuth2UserInfo = new NaverUserInfo((Map) oAuth2User.getAttributes().get("response"));
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("kakao")) {
+            System.out.println("카카오 로그인 요청");
+            oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
         } else {
-            System.out.println("우리는 구글과 네이버만 지원합니다.");
+            System.out.println("우리는 구글과 네이버와 카카오만 지원합니다.");
         }
 
         String provider = oAuth2UserInfo.getProvider(); // google
@@ -59,7 +63,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         User userEntity = userRepository.findByUsername(username);
 
         if (userEntity == null) {
-            System.out.println("구글 로그인이 최초입니다.");
+            System.out.println("소셜 로그인이 최초입니다.");
             userEntity = User.builder()
                     .username(username)
                     .password(password)
@@ -70,7 +74,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .build();
             userRepository.save(userEntity);
         } else {
-            System.out.println("구글 로그인을 이미 한적이 있습니다. 당신은 자동회원가입이 되어 있습니다.");
+            System.out.println("소셜 로그인을 이미 한적이 있습니다. 당신은 자동회원가입이 되어 있습니다.");
         }
 
         // 회원 가입을 강제로 진행해볼 예정
